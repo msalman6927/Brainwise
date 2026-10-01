@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --brand: #4f46e5;
+  --accent: #0ea5e9;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --level-foundation: #f59e0b;
+  --level-basic: #22c55e;
+  --level-intermediate: #3b82f6;
+  --level-advanced: #a855f7;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-brand: var(--brand);
+  --color-brand-dark: #4338ca;
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-level-foundation: var(--level-foundation);
+  --color-level-basic: var(--level-basic);
+  --color-level-intermediate: var(--level-intermediate);
+  --color-level-advanced: var(--level-advanced);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: #0f172a;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* WCAG AA: every interactive element gets a visible focus ring. */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* --- Skeleton shimmer (§8.4 / §14) --- */
+@keyframes bw-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.bw-skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: bw-shimmer 1.4s ease-in-out infinite;
+}
+
+/* --- Streaming cursor (§14.5) --- */
+@keyframes bw-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.bw-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--brand);
+  animation: bw-blink 1s step-end infinite;
+}
+
+/* --- Score reveal badge scale-in (§14.4) --- */
+@keyframes bw-scale-in {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.bw-scale-in { animation: bw-scale-in 400ms ease-out both; }
+
+/* --- Toast slide-in --- */
+@keyframes bw-toast-in {
+  from { transform: translateX(16px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.bw-toast { animation: bw-toast-in 200ms ease-out both; }
+
+/* --- Markdown article styles (explanation + follow-up replies) --- */
+.bw-prose {
+  line-height: 1.7;
+  font-size: 0.975rem;
+  color: #1e293b;
+  overflow-wrap: break-word;
+}
+.bw-prose > * + * { margin-top: 0.85em; }
+.bw-prose h1, .bw-prose h2, .bw-prose h3, .bw-prose h4 {
+  font-weight: 700;
+  line-height: 1.3;
+  color: #0f172a;
+  margin-top: 1.5em;
+}
+.bw-prose h1 { font-size: 1.4rem; }
+.bw-prose h2 { font-size: 1.22rem; }
+.bw-prose h3 { font-size: 1.08rem; }
+.bw-prose h4 { font-size: 1rem; }
+.bw-prose ul { list-style: disc; padding-left: 1.4em; }
+.bw-prose ol { list-style: decimal; padding-left: 1.4em; }
+.bw-prose li { margin-top: 0.3em; }
+.bw-prose li::marker { color: var(--muted); }
+.bw-prose a { color: var(--brand); text-decoration: underline; text-underline-offset: 2px; }
+.bw-prose code {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.875em;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.3rem;
+  padding: 0.1em 0.35em;
+}
+.bw-prose pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+.bw-prose pre code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+.bw-prose blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 0.9rem;
+  color: var(--muted);
+}
+.bw-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.bw-prose th, .bw-prose td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+}
+.bw-prose th { background: #f8fafc; font-weight: 600; }
+.bw-prose hr { border: none; border-top: 1px solid var(--border); }
+.bw-prose strong { color: #0f172a; }
+
+/* Touch targets ≥44px on mobile (§14 layout). */
+@media (max-width: 767px) {
+  button, a, [role="button"] { min-height: 44px; }
+  .bw-compact { min-height: 36px; }
+}
+
+/* Respect prefers-reduced-motion: kill decorative animation (§14 a11y).
+   JS-driven count-up also checks matchMedia before animating. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
